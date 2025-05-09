@@ -2,6 +2,10 @@
 
 # Arena Survival: Defender (Python & OpenGL)
 
+## Objective
+
+Survive for as long as possible by strategically defeating waves of diverse enemies while effectively managing available power-ups. Accumulate points by destroying hostile entities and enhance your offensive capabilities by upgrading your weapon to increase its firepower.
+
 ## Core Mechanics
 
 ### Movement
@@ -10,70 +14,73 @@
     * `A`: Move left
     * `S`: Move backward
     * `D`: Move right
-* **Bounding:** The player is confined to a square arena, with boundaries ranging from -50 to +50 on both the X and Z axes.
+* **Mouse:** Look around the environment and control your aiming direction.
+* **Bounding:** The player is confined within a square arena spanning 100x100 units on the X and Z axes.
 
 ### Combat
 * **Shooting:**
-    * **Left Mouse Click** or **Spacebar** to fire a projectile.
-    * There is a **0.5-second cooldown** between shots.
-    * Bullets travel in a straight line in the direction the player is currently aiming.
+    * **Left Mouse Click** or **Spacebar** to fire your weapon.
+    * **Gun Levels:** Your weapon's damage increases by 1 for every 100 points you score (e.g., Level 1 deals 1 damage, Level 2 deals 2 damage, and so on).
+    * **Cooldown:** There is a fixed **0.5-second cooldown** period between consecutive shots.
 * **Enemies:**
-    * **Small Drones (Red):** 1 Health Point (HP), 10 points upon destruction. Fly randomly.
-    * **Megatrons (Blue):** 3 HP, 100 points upon destruction. Emit bullets.
-    * **Tanks (Grey):** 5 HP, 50 points upon destruction. Move on the ground and shoot purple projectiles at the player.
+    * **Red Drones (🟥):** Fire random **green projectiles** that deal **1 damage** to the player.
+    * **Blue Drones (Megatrons) (🟦):** Fire **homing orange projectiles** that deal **3 damage** to the player.
+    * **Tanks (⬜):** Launch **purple shells** that deal **5 damage** to the player.
+* **Points:**
+    * Destroying a **Red Drone:** +10 points
+    * Destroying a **Megatron:** +100 points
+    * Destroying a **Tank:** +50 points
 
 ### Health & Power-Ups
-* **Health:** The player starts with **100 HP**. The game ends when health reaches 0.
-* **Medboxes (Red cubes with white crosses):** Collecting a medbox restores **25 HP**.
-* **Shields (Cyan spheres):** Collecting a shield grants **5 seconds of invincibility**.
+* **Health:** The player's survival begins with **100 Health Points**. The game concludes if the player's health reaches 0.
+* **Medboxes (❌):** Collecting a medbox instantly restores **25 Health Points**.
+* **Shields (🔵):** Upon collection, a shield grants the player **5 seconds of complete invincibility**.
 
 ### Enemy Behavior
-* **Drones:** Fly randomly within the arena and bounce off the arena boundaries.
-* **Tanks:**
-    * Move along the ground plane.
-    * Fire projectiles at the player with a random interval of **3 to 7 seconds**.
-    * Their turrets will track and aim at the player's current position.
-* **Spawning:**
-    * A new enemy will attempt to spawn every **5 seconds**.
-    * There can be a maximum of **10 enemies** present in the arena at any time.
-    * Small drones have a significantly higher chance of spawning compared to Megatrons and Tanks.
+* **Red Drones:** Exhibit random flight patterns within the arena. They spawn every **5 seconds**, concurrently with tanks.
+* **Megatrons:** Actively track the player's movement and fire homing projectiles. They spawn every **10 seconds**.
+* **Tanks:** Navigate along the ground surface of the arena. Their turrets continuously aim at the player's position. They spawn every **5 seconds**, concurrently with red drones.
+
+### Power-Up Spawning
+* **Shields (🔵):** Spawn randomly within the arena every **10 seconds**.
+* **Medboxes (❌):** Spawn randomly within the arena every **10 seconds**.
 
 ## Controls
 
-* **V:** Toggle between **first-person** and **third-person** camera views.
-* **P:** **Pause** or **resume** the game.
-* **R:** **Restart** the game. This will reset all stats (score, kills, time) and clear all entities from the arena. This can be used after a game over or during active gameplay.
-* **Q** / **Esc:** **Quit** the game application.
-* **Mouse:** Controls the **camera aim** by tracking mouse movement.
+* **V:** Toggles the camera perspective between **first-person** and **third-person view**.
+* **P:** **Pauses** or **resumes** the current game state.
+* **R:** **Restarts** the game. This function is only active and usable when the game is paused.
+* **Q** / **Esc:** **Quits** the game application entirely.
 
-## Scoring & Progression
+## HUD Elements
 
-### Points
-* Destroying a **Small Drone:** +10 points
-* Destroying a **Tank:** +50 points
-* Destroying a **Megatron:** +100 points
+The Heads-Up Display provides crucial information during gameplay:
+* **Health Bar (Top-Left):** Visually represents the player's current health.
+* **Shield Timer (Cyan, Below Health):** Indicates the remaining duration of the invincibility shield when active.
+* **Score (Top-Right):** Displays the player's current accumulated score.
+* **Kills (Top-Right):** Shows the total number of enemies the player has defeated.
+* **Time Survived (Top-Right):** Tracks the total time the player has managed to stay alive (excluding any paused time).
+* **Gun Level (Top-Right):** Indicates the current damage level of the player's weapon.
+* **"GAME OVER" Screen:** Appears when the player's health reaches zero, pausing the game.
 
-### Stats Tracked
-The game keeps track of the following statistics:
-* **Total Score:** The cumulative points earned.
-* **Tanks/Megatrons Killed:** The total number of tanks and megatrons destroyed.
-* **Time Survived:** The total time the player has survived in the arena, measured in seconds.
+## Advanced Features
+
+### Gun Progression
+The damage of the player's bullets scales dynamically with their score, increasing by **1 damage point for every 100 points** earned.
+
+### Bullet Types
+* **Player:** Fires **yellow bullets** whose damage is determined by the current gun level.
+* **Enemies:** Utilize distinct color-coded projectiles for easy identification: **green** (Red Drones), **orange** (Megatrons), and **purple** (Tanks).
+
+### Pause Mechanics
+When the game is paused, all gameplay elements are frozen, and the survival timer is temporarily stopped.
 
 ## Game Over & Restart
 
 ### Loss Condition
-The game ends immediately when the player's **health reaches 0**.
-
-### Game Over Screen
-Upon losing, a "**GAME OVER**" message will be displayed, and the gameplay will be paused.
+The game ends when the player's **health is depleted to 0**.
 
 ### Restart
-Pressing the **`R` key** will:
-* Reset the player's health to 100.
-* Reset the total score to 0.
-* Reset the counts for tanks and megatrons killed to 0.
-* Reset the time survived to 0.
-* Remove all existing enemies, medboxes, and shields from the arena.
-* Unpause the game, allowing the player to start a new round.
+While the game is **paused**, pressing the **`R` key** will initiate a restart. This action resets the player's health, score, kill counts, and survival time, allowing for a new game session.
 
 
